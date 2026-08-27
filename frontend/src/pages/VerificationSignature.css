@@ -1,0 +1,553 @@
+.page-verif,
+.page-verif table,
+.page-verif input,
+.page-verif select,
+.page-verif button,
+.modale,
+.modale input,
+.modale select,
+.modale button {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+}
+
+.voile {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modale {
+  background: white;
+  border-radius: 6px;
+  width: 600px;
+  max-width: 90%;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.modale-entete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid #e2e9e5;
+}
+
+.modale-entete h2 { margin: 0; font-size: 18px; }
+
+.modale-corps {
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.decision {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #e2e9e5;
+}
+
+.btn-valider, .btn-rejeter {
+  font: inherit;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.btn-valider { background: #16624f; color: #fff; border: 1px solid #16624f; }
+.btn-rejeter { background: #fff; color: #a02f1e; border: 1px solid #a02f1e; }
+.btn-valider:disabled, .btn-rejeter:disabled { opacity: .4; cursor: not-allowed; }
+
+.decision select {
+  font: inherit;
+  padding: 9px 10px;
+  border: 1px solid #c9d4d0;
+  border-radius: 3px;
+}
+
+.message { width: 100%; margin: 8px 0 0; color: #16624f; }
+.deja { margin: 0; color: #3b5666; }
+
+/* ==================================================================
+   Page
+   ================================================================== */
+.page-verif {
+  padding: 12px 24px 34px;    /* moins en haut, marge en bas */
+  background: #f2f4f3;
+  height: calc(100vh - 56px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-verif h1 {
+  font-size: 17px;
+  font-weight: 600;
+  color: #10202b;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.page-verif .sous-titre {
+  font-family: ui-monospace, monospace;
+  font-size: 12px;
+  color: #7a9099;
+  margin: 2px 0 10px;
+  flex-shrink: 0;
+}
+
+/* ==================================================================
+   Tableau
+   ================================================================== */
+.tableau-cadre {
+  background: #fff;
+  border: 1px solid #d5ddda;
+  border-radius: 4px;
+  overflow: hidden;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* Le tableau pousse la pagination vers le bas */
+.tableau-cadre table {
+  flex: 1;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 12px 14px;
+  border-top: 1px solid #d5ddda;
+  background: #f7faf8;
+  margin-top: auto;      /* ← colle la barre en bas */
+  flex-shrink: 0;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+/* ---- en-tête ---- */
+thead th {
+  background: #f7faf8;
+  text-align: left;
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #3b5666;
+  font-weight: 600;
+  padding: 9px 14px;
+  border-bottom: 1px solid #d5ddda;
+  white-space: nowrap;
+}
+
+/* ---- cellules ---- */
+tbody td {
+  padding: 8px 14px;
+  border-bottom: 1px solid #edf1ef;
+  color: #10202b;
+  vertical-align: middle;
+}
+
+tbody tr:last-child td { border-bottom: none; }
+
+tbody tr {
+  transition: background 0.12s;
+}
+
+tbody tr:hover { background: #f7faf8; }
+
+/* ---- alignements ---- */
+.col-montant {
+  text-align: right;
+  font-family: ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;   /* chiffres alignés verticalement */
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.col-mono {
+  font-family: ui-monospace, monospace;
+  font-size: 12.5px;
+  color: #3b5666;
+}
+
+.col-benef {
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---- colonnes IA : fond légèrement distinct ---- */
+.col-ia { background: #fbfcfb; }
+
+thead th.col-ia { background: #f3f7f5; }
+
+th.col-ia:first-of-type,
+td.col-ia:first-of-type { border-left: 1px solid #e5ebe8; }
+
+th.col-ia:last-of-type,
+td.col-ia:last-of-type  { border-right: 1px solid #e5ebe8; }
+
+/* ---- bouton Consulter ---- */
+.btn-consulter {
+  font: inherit;
+  font-size: 12.5px;
+  padding: 6px 13px;
+  border: 1px solid #c9d4d0;
+  background: #fff;
+  color: #10202b;
+  border-radius: 3px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.12s;
+}
+
+.btn-consulter:hover {
+  background: #10202b;
+  color: #fff;
+  border-color: #10202b;
+}
+.tableau-vide {
+  text-align: center;
+  color: #7a9099;
+  padding: 32px;
+  font-style: italic;
+}
+/* ==================================================================
+   Pagination
+   ================================================================== */
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 12px 14px;
+  border-top: 1px solid #d5ddda;
+  background: #f7faf8;
+}
+
+.pagination-info {
+  font-family: ui-monospace, monospace;
+  font-size: 12px;
+  color: #7a9099;
+}
+
+.pagination-boutons {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pagination-boutons button {
+  font: inherit;
+  font-size: 12.5px;
+  padding: 6px 13px;
+  border: 1px solid #c9d4d0;
+  background: #fff;
+  color: #10202b;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.12s;
+}
+
+.pagination-boutons button:hover:not(:disabled) {
+  background: #10202b;
+  color: #fff;
+  border-color: #10202b;
+}
+
+.pagination-boutons button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pagination-page {
+  font-family: ui-monospace, monospace;
+  font-size: 12.5px;
+  color: #3b5666;
+  min-width: 80px;
+  text-align: center;
+}
+
+/* ==================================================================
+   AJOUT: colonnes fixes pendant le scroll horizontal
+   ================================================================== */
+
+/* Colonne "Numéro" toujours visible à gauche */
+thead th:first-child,
+tbody td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: #fff;
+  box-shadow: 4px 0 6px -4px rgba(0, 0, 0, 0.12);
+}
+
+/* L'en-tête garde sa couleur de fond même en étant sticky */
+thead th:first-child {
+  background: #f7faf8;
+  z-index: 3; /* passe au-dessus des cellules sticky du corps */
+}
+
+/* Colonne "Actions" toujours visible à droite */
+.col-actions {
+  position: sticky;
+  right: 0;
+  z-index: 2;
+  background: #fff;
+  box-shadow: -4px 0 6px -4px rgba(0, 0, 0, 0.12);
+}
+
+thead th.col-actions {
+  background: #f7faf8;
+  z-index: 3;
+}
+
+/* AJOUT: petit indice visuel qu'il y a du contenu à droite —
+   un léger dégradé sur le bord droit du cadre du tableau */
+.tableau-cadre {
+  position: relative;
+}
+
+.tableau-cadre::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 24px;
+  pointer-events: none;
+  background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.06));
+}
+
+
+ 
+/* ---- flags Oui / Non / vide ---- */
+.flag {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 3px;
+}
+.flag-oui  { background: #e3efea; color: #16624f; }
+.flag-non  { background: #f6e5e1; color: #a02f1e; }
+.flag-vide { background: transparent; color: #9aa8ac; font-weight: 400; }
+ 
+/* ---- motif de rejet : tronque si trop long ---- */
+.col-motif {
+  max-width: 170px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12.5px;
+  color: #3b5666;
+}
+ 
+/* ---- colonne actions ---- */
+.col-actions {
+  text-align: center;
+  width: 60px;
+}
+ 
+.btn-icone {
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  font-size: 15px;
+  line-height: 1;
+  padding: 5px 9px;
+  cursor: pointer;
+}
+.btn-icone:hover {
+  background: #edf1ef;
+  border-color: #c9d4d0;
+}
+.btn-icone:focus-visible {
+  outline: 2px solid #16624f;
+  outline-offset: 1px;
+}
+ 
+/* ---- etats de page ---- */
+.etat-page {
+  padding: 32px;
+  color: #7a9099;
+}
+.etat-page.erreur {
+  color: #a02f1e;
+  background: #f6e5e1;
+  border-left: 3px solid #a02f1e;
+  margin: 24px;
+  padding: 14px 18px;
+}
+ 
+/* ---- liste de faits dans la modale ---- */
+.faits {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px 20px;
+  margin: 0 0 18px;
+}
+.faits dt {
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #7a9099;
+  margin-bottom: 2px;
+}
+.faits dd {
+  margin: 0;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #10202b;
+}
+.faits dd.mono {
+  font-family: ui-monospace, monospace;
+  font-size: 12.5px;
+  font-weight: 400;
+}
+ 
+/* ---- le tableau devient large : scroll horizontal si necessaire ---- */
+.tableau-cadre {
+  overflow-x: auto;
+}
+
+
+/* ---- retirer le scroll horizontal ---- */
+.tableau-cadre {
+  overflow-x: visible;
+}
+
+/* ---- colonne du chevron ---- */
+.col-chevron {
+  width: 34px;
+  text-align: center;
+  padding-right: 0 !important;
+}
+
+.btn-chevron {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font-size: 11px;
+  color: #3b5666;
+  padding: 4px 6px;
+  line-height: 1;
+  border-radius: 3px;
+}
+.btn-chevron:hover { background: #edf1ef; }
+.btn-chevron:focus-visible {
+  outline: 2px solid #16624f;
+  outline-offset: 1px;
+}
+
+/* ---- panneau déplié : fond ambre discret, comme l'application ---- */
+.ligne-detail > td {
+  background: #fdf9ec;
+  border-bottom: 1px solid #e8dfc4;
+  border-top: 1px solid #e8dfc4;
+  padding: 14px 18px 14px 48px;
+}
+
+.ligne-detail:hover > td { background: #fdf9ec; }
+
+.detail-grille {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px 28px;
+}
+
+.detail-large { grid-column: 1 / -1; }
+
+.detail-label {
+  display: block;
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8a7a4e;
+  margin-bottom: 3px;
+}
+
+.detail-valeur {
+  display: block;
+  font-size: 13px;
+  color: #10202b;
+}
+
+.detail-valeur.mono {
+  font-family: ui-monospace, monospace;
+  font-size: 12.5px;
+}
+
+.barre-filtres {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.puce-filtre {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font: inherit;
+  font-size: 12.5px;
+  padding: 6px 12px;
+  border: 1px solid #c9d4d0;
+  background: #fff;
+  color: #3b5666;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.12s;
+}
+
+.puce-filtre:hover { border-color: #10202b; }
+
+.puce-filtre[aria-pressed='true'] {
+  background: #10202b;
+  color: #fff;
+  border-color: #10202b;
+  font-weight: 600;
+}
+
+.puce-filtre:focus-visible {
+  outline: 2px solid #16624f;
+  outline-offset: 2px;
+}
+
+.puce-nb {
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  padding: 1px 6px;
+  border-radius: 8px;
+  background: #edf1ef;
+  color: #3b5666;
+}
+
+.puce-filtre[aria-pressed='true'] .puce-nb {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+}
+ 

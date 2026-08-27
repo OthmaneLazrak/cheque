@@ -1,0 +1,13 @@
+/* components/BadgeStatut.css */
+.statut {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 11.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.statut-valide  { background: #1e9e5c; color: #fff; }
+.statut-rejete  { background: #c0392b; color: #fff; }
+.statut-attente { background: #f0ad4e; color: #fff; }

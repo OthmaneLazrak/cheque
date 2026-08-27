@@ -1,0 +1,90 @@
+.panneau-filtre {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.btn-filtre {
+  font: inherit;
+  font-size: 13px;
+  padding: 8px 14px;
+  border: 1px solid #d5ddda;
+  background: #fff;
+  color: #10202b;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-filtre:hover { background: #f2f4f3; }
+
+.filtre-corps {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 10;
+  background: #fff;
+  border: 1px solid #d5ddda;
+  border-radius: 6px;
+  box-shadow: 0 8px 24px rgba(16, 32, 43, 0.12);
+  padding: 16px;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.filtre-champ {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.filtre-champ label {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #3b5666;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.filtre-champ input,
+.filtre-champ select {
+  font: inherit;
+  font-size: 13px;
+  padding: 8px 10px;
+  border: 1px solid #c9d4d0;
+  border-radius: 4px;
+}
+
+.filtre-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  padding-top: 10px;
+  border-top: 1px solid #edf1ef;
+}
+
+.btn-reinitialiser {
+  font: inherit;
+  font-size: 12.5px;
+  padding: 7px 12px;
+  border: none;
+  background: transparent;
+  color: #7a9099;
+  cursor: pointer;
+}
+
+.btn-reinitialiser:hover { color: #10202b; }
+
+.btn-appliquer {
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 7px 16px;
+  border: none;
+  background: #16624f;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-appliquer:hover { background: #10503f; }

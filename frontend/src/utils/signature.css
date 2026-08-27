@@ -1,0 +1,33 @@
+.signatures {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.signature {
+  border: 1px solid #c9d4d0;
+  padding: 10px;
+  background: #fff;
+}
+
+.signature h3 {
+  margin: 0;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #3b5666;
+}
+
+.signature small {
+  display: block;
+  color: #7a9099;
+  font-size: 11px;
+  margin-bottom: 8px;
+}
+
+.signature svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}

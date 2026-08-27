@@ -1,0 +1,19 @@
+.badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 3px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.badge-oui    { background: #e3efea; color: #16624f; }
+.badge-non    { background: #f6e5e1; color: #a02f1e; }
+.badge-grise  { background: #f7eedc; color: #8a5d10; }
+.badge-absent { background: #edf0f1; color: #7a9099; font-style: italic; }
+.badge small  { font-size: 10px; font-weight: 400; opacity: .8; }
+
+.score { display: flex; flex-direction: column; gap: 3px; min-width: 80px; }
+.score-bas span:first-child { color: #8a5d10; }
+.piste  { display: block; height: 4px; background: #e2e9e5; border-radius: 2px; }
+.jauge  { display: block; height: 100%; background: #16624f; border-radius: 2px; }
+.score-bas .jauge { background: #b8862b; }
+.score-absent { color: #7a9099; }
