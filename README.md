@@ -1,11 +1,10 @@
 # Verification de signatures de cheques
 
-Application de verification manuelle de signatures de cheques avec comparaison IA simulee.
-Le projet est compose de trois parties :
+Application de verification manuelle de signatures de cheques avec un resultat IA simule en base de donnees.
+Le projet est compose de deux parties :
 
 - `frontend/` : interface React et TypeScript pour consulter la file et prendre une decision ;
-- `backend/` : API Spring Boot qui lit les valeurs dans PostgreSQL et enregistre les decisions ;
-- `frontend/python/` : service FastAPI qui genere un resultat IA aleatoire et tente de le transmettre au backend.
+- `backend/` : API Spring Boot qui lit les valeurs dans PostgreSQL et enregistre les decisions.
 
 ## Architecture
 
@@ -14,16 +13,14 @@ Navigateur (React :3000 ou :5173)
               |
               v
      Spring Boot :8081  <---- PostgreSQL :5433
-              ^
-              |
-     FastAPI IA :8000
 ```
 
 Le frontend appelle le backend pour :
 
 1. charger la file de verification de l'agence `0142` ;
 2. afficher le detail d'une valeur, son image de cheque et un specimen simule ;
-3. valider ou rejeter la valeur.
+3. consulter le verdict et le score IA deja presents dans la base ;
+4. valider ou rejeter la valeur.
 
 Lors d'un rejet, le motif est obligatoire et doit etre l'un des suivants :
 
@@ -37,18 +34,16 @@ Lors d'un rejet, le motif est obligatoire et doit etre l'un des suivants :
 
 - Java 17, Spring Boot 4.1, Spring Web MVC, Spring Data JPA, Hibernate, Lombok et Actuator ;
 - PostgreSQL ;
-- React 19, TypeScript, Create React App, Axios et `lucide-react` ;
-- Python 3.10 ou plus recent, FastAPI, Uvicorn, HTTPX et Pydantic.
+- React 19, TypeScript, Create React App, Axios et `lucide-react`.
 
 ## Prerequis
 
 - JDK 17 ;
 - Node.js 18 ou plus recent et npm ;
-- Python 3.10 ou plus recent ;
 - PostgreSQL accessible sur le port `5433` ;
 - une base `borj` contenant le schema `borjref` et la table `borjref.bcm_infoval`.
 
-Le backend utilise `spring.jpa.hibernate.ddl-auto=validate` : il ne cree ni ne modifie les tables. Aucun script SQL d'initialisation n'est fourni dans le depot.
+Le backend utilise `spring.jpa.hibernate.ddl-auto=validate` : il ne cree ni ne modifie les tables. Le schema et les tables doivent donc exister avant le demarrage.
 
 ## Configuration
 
@@ -62,18 +57,18 @@ Valeurs attendues par defaut :
 | PostgreSQL | `jdbc:postgresql://localhost:5433/borj` |
 | Schema | `borjref` |
 | Frontend | `http://localhost:3000` |
-| Service IA | `http://localhost:8000` |
-| Cle callback IA | variable `IA_CALLBACK_KEY`, sinon `cle123456` |
-
-Ne commitez jamais un mot de passe de base de donnees. Configurez les identifiants PostgreSQL dans votre environnement ou dans une configuration locale non versionnee avant de lancer Spring Boot.
-
-La cle `IA_CALLBACK_KEY` doit etre identique cote Python et cote backend. Sous PowerShell :
-
-```powershell
-$env:IA_CALLBACK_KEY = "votre-cle-locale"
-```
 
 Le frontend utilise actuellement une URL d'API codee en dur dans [frontend/src/services/api.ts](frontend/src/services/api.ts).
+
+## Initialiser les donnees simulees
+
+Le script SQL de generation fourni avec le projet doit etre execute dans PostgreSQL apres la creation du schema et des tables necessaires.
+
+Il genere 200 valeurs dans `borjref.bcm_infoval` et simule les niveaux de traitement, les decisions des niveaux precedents, les donnees des cheques ainsi que le verdict et le score IA.
+
+La regle de coherence est `O` si le score est superieur ou egal a `0.80`, sinon `N`. Les colonnes `code_motif_impaye` et `detail_motif_rejet` restent vides jusqu'au rejet depuis l'interface.
+
+Le script contient des requetes de controle qui doivent retourner zero incoherence. Pour afficher les valeurs dans l'application, `agence_creation` doit correspondre a l'agence utilisee par le frontend, actuellement `0142`.
 
 ## Installation et lancement
 
@@ -104,30 +99,6 @@ npm start
 ```
 
 Ouvrir [http://localhost:3000](http://localhost:3000). Le backend doit etre demarre et accessible depuis le navigateur.
-
-### Service IA simule
-
-Depuis la racine du depot :
-
-```powershell
-cd frontend
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install fastapi uvicorn httpx pydantic
-python -m uvicorn python.main:app --reload --port 8000
-```
-
-Verification de sante : [http://localhost:8000/health](http://localhost:8000/health).
-
-Pour demander une analyse :
-
-```powershell
-curl -X POST http://localhost:8000/analyser `
-  -H "Content-Type: application/json" `
-  -d '{"numero_infoval_bcm": 123}'
-```
-
-Le resultat genere est volontairement aleatoire et ne constitue pas une vraie analyse d'image.
 
 ## API Spring
 
@@ -175,27 +146,6 @@ Les erreurs sont renvoyees sous la forme :
 }
 ```
 
-## Integration IA : etat actuel
-
-Le service FastAPI envoie le resultat vers :
-
-```text
-POST http://localhost:8081/api/ia/resultat
-Header: X-API-Key: <IA_CALLBACK_KEY>
-```
-
-avec un payload de la forme :
-
-```json
-{
-  "numeroInfovalBcm": 123,
-  "verdict": "O",
-  "score": 0.94
-}
-```
-
-Le filtre Spring protege bien les chemins `/api/ia/**`, mais le depot ne contient actuellement aucun contrôleur qui implemente `POST /api/ia/resultat`. L'appel `/analyser` echouera donc avec une erreur HTTP tant que cet endpoint n'aura pas ete ajoute. Le parcours manuel frontend/backend reste independant de cette limitation.
-
 ## Tests et build
 
 Backend :
@@ -224,7 +174,7 @@ backend/src/main/java/com/borj/verification/
   repository/   Acces JPA a bcm_infoval
   entity/       Mapping de la table borjref.bcm_infoval
   dto/          Contrats JSON de l'API
-  config/       CORS et protection du callback IA
+  config/       Configuration CORS
 
 frontend/src/
   pages/        Ecrans de verification
@@ -232,15 +182,12 @@ frontend/src/
   services/     Appels Axios vers Spring
   hooks/        Logique de chargement et de decision
   types/        Miroirs TypeScript des DTO Java
-
-frontend/python/main.py  Simulateur FastAPI de resultat IA
 ```
 
 ## Points a completer avant production
 
-- ajouter le contrôleur Spring du callback IA ou adapter l'URL du service Python ;
 - remplacer `SpecimenSimuleService` par une source réelle des images et specimens ;
 - externaliser les URLs frontend/backend et les identifiants de configuration ;
 - ajouter une authentification utilisateur et une autorisation par agence ;
 - fournir une migration SQL versionnee et des tests d'integration avec PostgreSQL ;
-- remplacer l'IA aleatoire par un modele et une gestion fiable des erreurs/reprises.
+- remplacer les donnees simulees et les specimens simules par des donnees de production.
