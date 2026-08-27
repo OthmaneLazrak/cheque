@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class BcmInfovalApplication {
+public class BcmInfoValApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(BcmInfovalApplication.class, args);
+        SpringApplication.run(BcmInfoValApplication.class, args);
     }
 
 }
